@@ -9,6 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.Random;
 
@@ -17,13 +18,38 @@ public class MainActivity extends AppCompatActivity {
     public static final Random random = new Random();
     private ImageView coin;
     private Button btnFlip;
+    private Button btnHeads;
+    private Button btnTails;
+    public TextView txtScore;
+    public int scoreNum = 0;
+    private boolean result = true;
+    private boolean predict = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        coin = (ImageView) findViewById(R.id.coin);
+        coin = (ImageView) findViewById(R.id.coinImg);
         btnFlip = (Button) findViewById(R.id.btnFlip);
+        txtScore = (TextView) findViewById(R.id.scoreTxt);
+        txtScore.setText("Correct Score: 0");
+
+        btnHeads = (Button) findViewById(R.id.headsBtn);
+        btnHeads.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                predict = true;
+            }
+        });
+
+        btnTails = (Button) findViewById(R.id.tailsBtn);
+        btnTails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                predict = false;
+            }
+        });
+
         btnFlip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,7 +71,18 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                coin.setImageResource(random.nextFloat() > 0.5f ? R.drawable.pound_tails : R.drawable.pound_heads);
+                if (random.nextFloat() > 0.5f){
+                    coin.setImageResource(R.drawable.pound_tails);
+                    result = false;
+                }
+                else{
+                    coin.setImageResource(R.drawable.pound_heads);
+                    result = true;
+                }
+
+                if (predict == result){
+                    scoreNum++;
+                }
 
                 Animation fadeIn = new AlphaAnimation(0,1);
                 fadeIn.setInterpolator(new DecelerateInterpolator());
@@ -53,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 fadeIn.setFillAfter(true);
 
                 coin.startAnimation(fadeIn);
+                txtScore.setText("Correct score: " + Integer.toString(scoreNum));
             }
 
             @Override
