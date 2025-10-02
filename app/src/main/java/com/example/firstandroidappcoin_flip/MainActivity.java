@@ -1,6 +1,8 @@
 package com.example.firstandroidappcoin_flip;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -35,17 +37,23 @@ public class MainActivity extends AppCompatActivity {
         txtScore.setText("Correct Score: 0");
 
         btnHeads = (Button) findViewById(R.id.headsBtn);
+        btnHeads.setTextColor(Color.BLACK);
         btnHeads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnHeads.setTextColor(Color.BLACK);
+                btnTails.setTextColor(Color.WHITE);
                 predict = true;
             }
         });
 
         btnTails = (Button) findViewById(R.id.tailsBtn);
+        btnTails.setTextColor(Color.WHITE);
         btnTails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btnHeads.setTextColor(Color.WHITE);
+                btnTails.setTextColor(Color.BLACK);
                 predict = false;
             }
         });
